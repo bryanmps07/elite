@@ -1,0 +1,191 @@
+<app-toasts [color]="colorToats" [txtToats]="txtToast"></app-toasts>
+
+<c-row>
+  <c-col xs>
+    <c-card class="mb-3">
+
+      <c-card-header><strong>Registro de Miembros</strong></c-card-header>
+
+      <c-card-body>
+
+        <form
+          [formGroup]="memberForm"
+          (ngSubmit)="onSubmit()"
+          [gutter]="3"
+          [validated]="formValidated"
+          novalidate
+          cForm cRow
+          class="needs-validation"
+        >
+
+          <c-col [md]="3">
+            <label cLabel for="document">Cedula <span class="field-required">*</span></label>
+            <input cFormControl id="document" type="text" formControlName="document" mask="000-0000000-0" [showMaskTyped]="true" placeholder="000-0000000-0" required/>
+            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="first_name">Nombre <span class="field-required">*</span></label>
+            <input cFormControl id="first_name"  type="text" formControlName="first_name" placeholder="Digita un nombre" required/>
+            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="last_name">Apellido <span class="field-required">*</span></label>
+            <input cFormControl id="last_name" required type="text" formControlName="last_name" placeholder="Digita un apellido" />
+            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="nick_name">Apodo</label>
+            <input cFormControl id="nick_name" type="text" formControlName="nick_name" placeholder="Digita un apodo" />
+            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="phone">Tel&eacute;fono <span class="field-required">*</span></label>
+            <input cFormControl id="phone" type="text" placeholder="809-555-5555" mask="(000)-000-0000" [showMaskTyped]="true" formControlName="phone" required />
+            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="cell_phone">Celular <span class="field-required">*</span></label>
+            <input cFormControl id="cell_phone" type="text" placeholder="809-555-5555" mask="(000)-000-0000" [showMaskTyped]="true" formControlName="cell_phone" />
+            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="2" formGroupName="genders">
+            <label for="">Sexo: <span class="field-required">*</span></label>
+            <c-form-check>
+              <input
+                formControlName="gender"
+                cFormCheckInput
+                id="male"
+                type="radio"
+                value="m"
+              />
+              <label cFormCheckLabel for="male">Masculino</label>
+            </c-form-check>
+            <c-form-check inline>
+              <input
+                formControlName="gender"
+                cFormCheckInput
+                id="female"
+                type="radio"
+                value="f"
+              />
+              <label cFormCheckLabel for="female">Femenino</label>
+            </c-form-check>
+          </c-col>
+
+          <c-col [md]="4">
+            <label cLabel for="electoral_college">Colegio Electoral <span class="field-required">*</span></label>
+            <input cFormControl id="electoral_college" required formControlName="electoral_college" type="text" placeholder="Digita un colegio electoral" />
+            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="4">
+            <label cLabel for="campus_college">Recinto <span class="field-required">*</span></label>
+            <input cFormControl id="campus_college" required type="text" formControlName="campus_college" placeholder="Digita el nombre de un recinto" />
+            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+          </c-col>
+
+
+
+          <c-col [md]="4">
+            <label cLabel for="address">Direccion <span class="field-required">*</span></label>
+            <input cFormControl id="address" formControlName="address" placeholder="Digita una direcci&oacute;n" required type="text" />
+            <c-form-feedback [valid]="false">Por favor digita una direcci&oacute;n.</c-form-feedback>
+          </c-col>
+
+          <hr>
+
+          <c-col [md]="3">
+            <label cLabel for="coordinator">Coordinador <span class="field-required">*</span></label>
+              <select
+                cSelect
+                id="coordinator"
+                formControlName="coordinator"
+                aria-label="Default select example"
+                (change)="onCoordinatorChange($event)"
+                [class.readonly-select]="isReadonlyForCoordinator"
+                required
+              >
+                <option value="">Selecciona un coordinador...</option>
+                <option *ngFor="let coordinator of coordinators" [value]="coordinator.id">{{ coordinator.first_name | titlecase }} {{ coordinator.last_name | titlecase }}</option>
+              </select>
+              <c-form-feedback [valid]="false">Por favor selecciona un coordinador.</c-form-feedback>
+          </c-col>
+
+          <hr>
+
+          <c-col [md]="3">
+            <label cLabel for="province">Provincia <span class="field-required">*</span></label>
+            <select id="province" formControlName="province" aria-label="Default select example" (change)="onProvinciaChange($event, 'manual')" [class.readonly-select]="isReadonly"  cSelect required>
+              <option value="">Selecciona una provincia...</option>
+              <option *ngFor="let province of provinces" [value]="province.id">{{ province.name | titlecase }}</option>
+            </select>
+            <c-form-feedback [valid]="false">Por favor selecciona una provincia.</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="municipality">Municipio <span class="field-required">*</span></label>
+            <select id="municipality" formControlName="municipality" aria-label="Default select example" (change)="onMunicipalityChange($event)" [class.readonly-select]="isReadonly" cSelect required>
+              <option value="">Selecciona un municipio...</option>
+              <option *ngFor="let municipality of municipalities" [value]="municipality.id">{{ municipality.name | titlecase }}</option>
+            </select>
+            <c-form-feedback [valid]="false">Por favor selecciona un municipio.</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="distritc">Distrito Municipal</label>
+            <select id="distritc" formControlName="distritc" aria-label="Default select example" [class.readonly-select]="isReadonly" cSelect>
+              <option value="">Selecciona un Distrito...</option>
+              <option value="1">Santiago Oeste</option>
+            </select>
+            <!-- <c-form-feedback [valid]="false">Por favor selecciona un distrito.</c-form-feedback> -->
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="circumscription">Circunscripci&oacute;n</label>
+            <select id="circumscription" formControlName="circumscription" aria-label="Default select example" [class.readonly-select]="isReadonly" cSelect>
+              <option value="">Selecciona una Circunscripci&oacute;n...</option>
+              <option value="1">CIRC. 1</option>
+            </select>
+            <!-- <c-form-feedback [valid]="false">Por favor selecciona una Circunscripci&oacute;n.</c-form-feedback> -->
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="region">Region <span class="field-required">*</span></label>
+            <select cSelect id="region" formControlName="region" aria-label="Default select example" (change)="onRegionChange($event)" [class.readonly-select]="isReadonlyForCoordinator" required>
+              <option value="">Selecciona una regi&oacute;n...</option>
+              <option *ngFor="let region of regions" [value]="region.id">{{ region.name | uppercase }}</option>
+            </select>
+            <c-form-feedback [valid]="false">Por favor selecciona una regi&oacute;n.</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="3">
+            <label cLabel for="zone">Zona <span class="field-required">*</span></label>
+            <select cSelect id="zone" formControlName="zone" aria-label="Default select example" [class.readonly-select]="isReadonlyForCoordinatorZone" required>
+              <option value="">Selecciona una zona...</option>
+              <option *ngFor="let zone of zones" [value]="zone.id">{{ zone.name | uppercase }}</option>
+            </select>
+            <c-form-feedback [valid]="false">Por favor selecciona una zona.</c-form-feedback>
+          </c-col>
+
+          <c-col [xs]="12">
+            <button cButton class="me-1" color="primary" type="submit" [disabled]="memberForm.invalid">
+              Regitrar
+            </button>
+            <button (click)="onReset()" cButton color="secondary" type="button">
+              Borrar
+            </button>
+          </c-col>
+
+        </form>
+
+      </c-card-body>
+
+    </c-card>
+  </c-col>
+</c-row>

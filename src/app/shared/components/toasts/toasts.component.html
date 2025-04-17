@@ -1,0 +1,11 @@
+<c-toaster [placement]="position" class="p-3" position="fixed" >
+  <c-toast
+    [color]="color"
+    (timer)="onTimerChange($event)"
+    (visibleChange)="onVisibleChange($event)"
+    [visible]="visible">
+    <c-toast-header>
+      <strong>{{txtToats}}</strong>
+    </c-toast-header>
+  </c-toast>
+</c-toaster>

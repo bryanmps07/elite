@@ -1,0 +1,65 @@
+<c-row class="col-12">
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>Listado Miembros</c-card-header>
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          align="middle"
+          class="mb-0 border"
+          cTable>
+          <thead  cTableColor="light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Celular</th>
+            <th scope="col">Genero</th>
+            <th scope="col">Zona</th>
+            <th scope="col">Coordinador</th>
+            <th scope="col">Inscripcion</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <th>Ferdys</th>
+            <td>Duran</td>
+            <td>809-555-5555</td>
+            <td>M</td>
+            <td>H</td>
+            <td>Felipe Santos</td>
+            <td>{{'09/04/2025' | date}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+
+        <br>
+
+        <c-pagination align="end" aria-label="Page navigation example">
+          <li cPageItem [disabled]="true">
+            <a cPageLink [routerLink]>Previous</a>
+          </li>
+          <li cPageItem>
+            <a cPageLink [routerLink]>1</a>
+          </li>
+          <li cPageItem>
+            <a cPageLink [routerLink]>2</a>
+          </li>
+          <li cPageItem>
+            <a cPageLink [routerLink]>3</a>
+          </li>
+          <li cPageItem>
+            <a cPageLink [routerLink]>Next</a>
+          </li>
+        </c-pagination>
+
+    </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+
+

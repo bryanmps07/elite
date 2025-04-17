@@ -1,0 +1,14 @@
+// Here you can add other styles
+
+// Sobrescribe variables antes de importar
+$primary: #0d6efd; // Reemplaza este color por tu nuevo "morado" o color primario
+
+$theme-colors: (
+  "primary": #4e73df,
+  "secondary": #6c757d,
+  // etc...
+);
+
+// Ahora importa Bootstrap y CoreUI
+@import "@coreui/coreui/scss/coreui";
+

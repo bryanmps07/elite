@@ -1,0 +1,71 @@
+<app-search-box
+(onDebounce)="loadUsers(currentPage, $event)"
+[initialValue]="initialValue"
+placeholder="Buscar por nombre o cedula"
+></app-search-box>
+
+<c-row >
+  <c-col class="col-12">
+    <c-card class="mb-4">
+      <c-card-header>Usuarios</c-card-header>
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          align="middle"
+          class="mb-0 border"
+          cTable>
+          <thead  cTableColor="light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Cedula</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Celular</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Fecha Creacion</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of users">
+            <th scope="row">{{ user.id }}</th>
+            <td>{{ user.document | pipeDocument }}</td>
+            <th>{{ user.first_name | titlecase }}</th>
+            <td>{{ user.last_name | titlecase }}</td>
+            <td>{{ user.phone | phoneFormat }}</td>
+            <td>{{ user.role?.name || '' | titlecase }}</td>
+            <td>{{'09/04/2025' | dateFormat }}</td>
+          </tr>
+          </tbody>
+        </table>
+
+
+        <br>
+
+        <c-pagination *ngIf="pagination && users?.length" align="end" aria-label="Page navigation example">
+
+          <!-- Botón Anterior -->
+          <li cPageItem [class.disabled]="pagination.current_page == 1">
+            <a cPageLink (click)="loadUsers(pagination.current_page - 1, initialValue)">Anterior</a>
+          </li>
+
+          <!-- Números de página -->
+          <li cPageItem
+              *ngFor="let page of [].constructor(pagination.total_pages); let i = index"
+              [class.active]="pagination.current_page === i + 1"
+            >
+            <a cPageLink (click)="loadUsers(i + 1, initialValue)">{{ i + 1 }}</a>
+          </li>
+
+          <li cPageItem [class.disabled]="pagination.current_page === pagination.total_pages">
+            <a cPageLink (click)="loadUsers(pagination.current_page + 1, initialValue)">Siguiente</a>
+          </li>
+        </c-pagination>
+
+    </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+
+

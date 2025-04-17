@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+.field-required {
+  color: red;
+}
+
+.readonly-select {
+  pointer-events: none;  /* Evita hacer clic en el select */
+  background-color: #f0f0f0;  /* Cambia el color de fondo para simular solo lectura */
+}

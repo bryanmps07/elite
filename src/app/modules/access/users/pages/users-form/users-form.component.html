@@ -1,0 +1,179 @@
+<app-toasts [color]="colorToats" [txtToats]="txtToast"></app-toasts>
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+
+      <c-card-header><strong>Registro de Usuarios</strong></c-card-header>
+
+      <c-card-body>
+
+        <form [formGroup]="userForm"
+          (ngSubmit)="onSubmit()"
+          [gutter]="3"
+          [validated]="formValidated"
+          novalidate
+          cForm cRow
+          class="needs-validation"
+        >
+
+        <c-col [md]="12">
+          <label cLabel for="inputEmail4">Rol: </label>
+          <div formGroupName="rol"> <!-- FormGroupName debe coincidir con la propiedad 'rol' -->
+            <c-button-group>
+              <input class="btn-check mx-2"
+                     formControlName="role"
+                     id="regional"
+                     type="radio"
+                     value="3" />
+              <label (click)="setRadioValue('3')"
+                     cButton
+                     cFormCheckLabel
+                     color="info"
+                     for="regional"
+                     variant="outline">
+                Coordinador Regional
+              </label>
+
+              <input class="btn-check"
+                     formControlName="role"
+                     id="zone-grp2"
+                     type="radio"
+                     value="5" />
+              <label (click)="setRadioValue('5')"
+                     cButton
+                     cFormCheckLabel
+                     color="info"
+                     for="zone-grp2"
+                     variant="outline">
+                Coordinador de Zona
+              </label>
+
+              <input class="btn-check"
+                     formControlName="role"
+                     id="digitador-grp2"
+                     type="radio"
+                     value="2" />
+              <label (click)="setRadioValue('2')"
+                     cButton
+                     cFormCheckLabel
+                     color="info"
+                     for="digitador-grp2"
+                     variant="outline">
+                Digitador
+              </label>
+
+              <input class="btn-check"
+                     formControlName="role"
+                     id="admin-grp2"
+                     type="radio"
+                     value="1" />
+              <label (click)="setRadioValue('1')"
+                     cButton
+                     cFormCheckLabel
+                     color="info"
+                     for="admin-grp2"
+                     variant="outline">
+                Admin
+              </label>
+            </c-button-group>
+          </div>
+        </c-col>
+
+        <hr>
+
+          <c-col [md]="6">
+            <label cLabel for="document">Cedula</label>
+            <input cFormControl id="document" type="text" mask="000-0000000-0" [showMaskTyped]="true" formControlName="document" required/>
+            <c-form-feedback [valid]="true">Luce Bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="6">
+            <label cLabel for="password">Contrase&ntilde;a</label>
+            <input cFormControl id="password" formControlName="password" placeholder="Digita una contrase&ntilde;a" required type="password"/>
+            <c-form-feedback [valid]="true">Luce Bien!</c-form-feedback>
+          </c-col>
+
+          <hr>
+
+          <c-col [md]="4">
+            <label cLabel for="first_name">Nombre</label>
+            <input cFormControl id="first_name" required type="text" placeholder="Digita un nombre" formControlName="first_name" />
+            <c-form-feedback [valid]="true">Luce Bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="4">
+            <label cLabel for="last_name">Apellido</label>
+            <input cFormControl id="last_name" required type="text" placeholder="Digita un apellido" formControlName="last_name" />
+            <c-form-feedback [valid]="true">Luce Bien!</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="4">
+            <label cLabel for="phone">Tel&eacute;fono</label>
+            <input cFormControl id="phone" type="text" placeholder="" mask="(000)-000-0000" [showMaskTyped]="true" formControlName="phone" />
+            <c-form-feedback [valid]="true">Luce Bien!</c-form-feedback>
+          </c-col>
+
+          <hr>
+
+          <ng-container *ngIf="showAddressContainer">
+
+            <c-col [md]="4">
+              <label cLabel for="province">Provincia</label>
+              <select id="province" formControlName="province" aria-label="Default select example" [class.readonly-select]="isProvinceReadonly"  (change)="onProvinciaChange($event)" cSelect required>
+                <option value="">Selecciona una provincia...</option>
+                <option *ngFor="let province of provinces" [value]="province.id">{{ province.name | titlecase }}</option>
+              </select>
+              <c-form-feedback [valid]="false">Por favor selecciona una provincia.</c-form-feedback>
+            </c-col>
+
+            <c-col [md]="4">
+              <label cLabel for="municipality">Municipio</label>
+              <select id="municipality" formControlName="municipality" aria-label="Default select example" [class.readonly-select]="isProvinceReadonly" (change)="onMunicipalityChange($event)" cSelect required>
+                <option value="">Selecciona un municipio...</option>
+                <option *ngFor="let municipality of municipalities" [value]="municipality.id">{{ municipality.name | titlecase }}</option>
+              </select>
+              <c-form-feedback [valid]="false">Por favor selecciona un municipio.</c-form-feedback>
+            </c-col>
+
+            <c-col [md]="4">
+              <label cLabel for="ditrict">Distrito Municipal</label>
+              <input cFormControl id="ditrict" type="text" [disabled]="isDisabled"  />
+              <!-- <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback> -->
+            </c-col>
+
+            <c-col [md]="4">
+              <label cLabel for="region">Region</label>
+              <select cSelect id="region" formControlName="region" aria-label="Default select example" (change)="onRegionChange($event)" required>
+                <option value="">Selecciona una regi&oacute;n...</option>
+                <option *ngFor="let region of regions" [value]="region.id">{{ region.name | uppercase }}</option>
+              </select>
+              <c-form-feedback [valid]="false">Por favor selecciona una regi&oacute;n.</c-form-feedback>
+            </c-col>
+
+            <c-col [md]="3">
+              <label cLabel for="zone">Zona</label>
+              <select cSelect id="zone" formControlName="zone" aria-label="Default select example" [class.readonly-select]="isZoneReadonly">
+                <option value="">Selecciona una zona...</option>
+                <option *ngFor="let zone of zones" [value]="zone.id">{{ zone.name | uppercase }}</option>
+              </select>
+              <c-form-feedback [valid]="false">Por favor selecciona una zona.</c-form-feedback>
+            </c-col>
+
+          </ng-container>
+
+          <c-col [xs]="12">
+            <button cButton class="me-1" color="primary" type="submit" [disabled]="userForm.invalid">
+              Regitrar
+            </button>
+            <button (click)="onReset()" cButton color="secondary" type="reset">
+              Borrar
+            </button>
+          </c-col>
+
+        </form>
+
+      </c-card-body>
+
+    </c-card>
+  </c-col>
+</c-row>
