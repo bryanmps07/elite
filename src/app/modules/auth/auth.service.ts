@@ -18,7 +18,8 @@ export class AuthService {
   private readonly IDENTITY = 'identity';
   private readonly PASSWORD_TOKEN = 'passwordToken';
 
-  private apiUrl: string = 'http://localhost/api-php/api';
+  // private apiUrl: string = 'http://localhost/api-php/api';
+  private apiUrl: string = 'https://linen-hyena-301899.hostingersite.com';
   private tokenKey = 'auth_token';
   public tokenAuth: Token = {} as Token;
 

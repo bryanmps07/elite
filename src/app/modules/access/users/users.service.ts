@@ -10,7 +10,8 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class UsersService {
 
-  private apiUrl: string = 'http://localhost/api-php/api';
+  // private apiUrl: string = 'http://localhost/api-php/api';
+  private apiUrl: string = 'https://linen-hyena-301899.hostingersite.com';
 
   constructor( private http: HttpClient, private authService: AuthService ) { }
 

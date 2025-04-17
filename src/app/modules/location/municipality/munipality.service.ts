@@ -8,7 +8,8 @@ import { Municipalities, Municipality } from './interfaces/municipality.interfac
 })
 export class MunipalityService {
 
-  private apiUrl: string = 'http://localhost/api-php/api';
+  // private apiUrl: string = 'http://localhost/api-php/api';
+  private apiUrl: string = 'https://linen-hyena-301899.hostingersite.com';
 
   constructor( private http: HttpClient ) { }
 
