@@ -13,8 +13,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:href": "ng build --base-href ./",
+    "build:github": "npm run delete:docs && npm run build:href && npm run copy:dist",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "delete:docs": "del /Q docs",
+    "copy:dist": "copyfiles -u 1 dist/elite/browser/** ./docs -f"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +41,8 @@
     "@coreui/utils": "^2.0.1",
     "@ng-select/ng-select": "^9.0.0",
     "chart.js": "^3.9.1",
+    "copyfiles": "^2.3.0",
+    "del": "^8.0.0",
     "jwt-decode": "^4.0.0",
     "ngx-mask": "^13.1.4",
     "ngx-perfect-scrollbar": "^10.1.1",
