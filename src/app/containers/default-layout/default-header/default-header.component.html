@@ -13,9 +13,19 @@
       ></svg>
     </button>
 
-    <c-header-nav class="ms-3">
+    <c-header-nav class="ms-3 align-items-center d-flex">
+
+      <ng-container>
+        <div class="text-end me-2">
+          <p class="mb-0 fw-bold">{{ user?.userName | titlecase }}</p>
+          <small class="text-muted">{{ user?.role | titlecase }}</small>
+        </div>
+      </ng-container>
+
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
+
     </c-header-nav>
+
 
   </c-container>
 

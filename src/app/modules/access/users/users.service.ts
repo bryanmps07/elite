@@ -1,9 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Users } from './interfaces/user.interfaces';
+import { User, Users } from './interfaces/user.interfaces';
 import { Coordinators } from './interfaces/coordinators.interfaces';
 import { AuthService } from '../../auth/auth.service';
+import { environment } from '../../../../environments/environments';
+
+const apiUrl = `${environment.apiUrl}`;
 
 @Injectable({
   providedIn: 'root'
@@ -11,26 +14,30 @@ import { AuthService } from '../../auth/auth.service';
 export class UsersService {
 
   // private apiUrl: string = 'http://localhost/api-php/api';
-  private apiUrl: string = 'https://linen-hyena-301899.hostingersite.com';
 
   constructor( private http: HttpClient, private authService: AuthService ) { }
 
   searchUsers(page: number = 1, term: string = ''): Observable<Users> {
-    let url = `${this.apiUrl}/usuarios?page=${page}`;
+    let url = `${apiUrl}/usuarios?page=${page}`;
 
     if (term != '') {
       // console.log('hola',term);
-      url = `${this.apiUrl}/usuarios/buscar?q=${encodeURIComponent(term)}&page=${page}`;
+      url = `${apiUrl}/usuarios/buscar?q=${encodeURIComponent(term)}&page=${page}`;
     }
 
     return this.http.get<Users>( url );
   }
 
-  seachUser(page: number = 1, term: string = ''): void {}
+  getUserById(userId: string): Observable<User[]> {
+
+    return this.http.get<User[]>(
+      `${apiUrl}/usuarios/${userId}`
+    );
+  }
 
   createUser(data: any): Observable<any> {
 
-    const url = `${ this.apiUrl }/usuarios`;
+    const url = `${ apiUrl }/usuarios`;
 
     return this.http.post( url, data ).pipe(
       catchError( err => {
@@ -40,11 +47,25 @@ export class UsersService {
 
   }
 
-  updateUser(): void {}
+  updateUser(userId: string | null, userForm: any): Observable<User> {
+    // console.log(userForm);
+
+    return this.http.put<User>(
+      `${apiUrl}/usuarios/${userId}`, userForm
+    );
+  }
+
+  activateUser(userId: number | null, status: any): Observable<any> {
+    console.log({userId, status});
+    const body = { status };
+    return this.http.put<any>(
+      `${apiUrl}/usuarios/activate/${userId}`, body
+    );
+  }
 
   loadCoodinatorSelect( userId?: string ): Observable<Coordinators> {
     const role = this.authService.getRole();
-    const url = `${this.apiUrl}/coordinators`;
+    const url = `${apiUrl}/coordinators`;
     let param = '';
     // console.log(role, 'hola');
 

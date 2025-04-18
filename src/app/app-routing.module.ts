@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 
 import { DefaultLayoutComponent } from './containers';
 import { Page404Component } from './views/pages/page404/page404.component';
@@ -54,12 +54,12 @@ const routes: Routes = [
         loadChildren: () =>
           import('./modules/access/access.module').then(m => m.AccessModule)
       },
-      {
-        path: 'locations',
-        // canActivate: [AuthGuard],
-        loadChildren: () =>
-          import('./modules/location/location.module').then(m => m.LocationModule)
-      },
+      // {
+      //   path: 'locations',
+      //   // canActivate: [AuthGuard],
+      //   loadChildren: () =>
+      //     import('./modules/location/location.module').then(m => m.LocationModule)
+      // },
     ]
   },
   // {
@@ -115,14 +115,19 @@ const routes: Routes = [
   {path: '**', redirectTo: 'dashboard'}
 ];
 
+const routerOptions: ExtraOptions = {
+  useHash: false // Esto evita el uso del '#' en las URLs
+};
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
-      initialNavigation: 'enabledBlocking'
+      initialNavigation: 'enabledBlocking',
+      useHash: false
       // relativeLinkResolution: 'legacy'
-    })
+    }, )
   ],
   exports: [RouterModule]
 })

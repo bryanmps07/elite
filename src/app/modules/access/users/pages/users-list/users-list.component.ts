@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UsersService } from '../../users.service';
 import { Pagination, User } from '../../interfaces/user.interfaces';
+import { AuthService } from '../../../../auth/auth.service';
+import { IconSetService } from '@coreui/icons-angular';
+import { cilPencil, cilBan, cilCheckCircle } from '@coreui/icons';
+import { ToastsComponent } from '../../../../../shared/components/toasts/toasts.component';
 
 @Component({
   selector: 'app-users-list',
@@ -10,17 +14,33 @@ import { Pagination, User } from '../../interfaces/user.interfaces';
 })
 export class UsersListComponent implements OnInit{
 
+  @ViewChild(ToastsComponent) toastsComponent!: ToastsComponent;
+  txtToast: string = '';
+  colorToats: string = '';
+
   public users: User[] = [];
   public pagination! : Pagination;
   public currentPage: number = 1;
   public initialValue: string = '';
 
-  constructor( private userService: UsersService) {
+  public role: string | null = '';
+  // icons = freeSet;
 
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+    public iconSet: IconSetService
+  ) {
+    this.iconSet.icons = { cilPencil, cilBan, cilCheckCircle };
   }
 
   ngOnInit(): void {
     this.loadUsers();
+    this.getRole();
+  }
+
+  getRole(): void {
+    this.role = this.authService.getRole();
   }
 
   loadUsers(page: number = 1, term: string = ''): void {
@@ -48,6 +68,32 @@ export class UsersListComponent implements OnInit{
       });
 
 
+  }
+
+  activateUser(userId: number, status: number): void {
+    // console.log({userId, status});
+
+    this.userService.activateUser( userId, status ).subscribe({
+      next: (res) => {
+        // console.log('Usuario creado', res);
+        // Mostrar el toast
+        if (status === 1) {
+          this.txtToast = 'Usuario desactivado con exito';
+        } else {
+          this.txtToast = 'Usuario activado con exito';
+        }
+        this.colorToats = 'success';
+        this.toastsComponent.toggleToast();
+        this.loadUsers();
+      },
+      error: (err) => {
+        console.log('Error al actualizar el usuario', err);
+
+        this.txtToast = err.error;
+        this.colorToats = 'danger';
+        this.toastsComponent.toggleToast();
+      }
+    });
   }
 
 

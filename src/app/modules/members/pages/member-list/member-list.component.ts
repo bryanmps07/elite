@@ -9,6 +9,8 @@ import { Region } from '../../../location/region/interfaces/region.interfaces';
 import { Zone } from '../../../location/zone/interfaces/zone.interfaces';
 import { RegionService } from '../../../location/region/region.service';
 import { ZoneService } from '../../../location/zone/zone.service';
+import { IconSetService } from '@coreui/icons-angular';
+import { cilPencil } from '@coreui/icons';
 
 @Component({
   selector: 'app-member-list',
@@ -42,9 +44,11 @@ export class MemberListComponent {
     private authService: AuthService,
     private userService: UsersService,
     private regionService: RegionService,
-    private zoneService: ZoneService
+    private zoneService: ZoneService,
+    private iconSet: IconSetService
   ) {
     this.showSelectByRole();
+    this.iconSet.icons = { cilPencil };
   }
 
 

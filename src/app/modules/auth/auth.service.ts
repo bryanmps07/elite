@@ -4,6 +4,9 @@ import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { ValidateTokenRequest, Response, ValidateToken, RefreshTokenRequest, Token } from './interfaces/index';
+import { environment } from '../../../environments/environments';
+
+const apiUrl = `${environment.apiUrl}`;
 
 const headers = new HttpHeaders({
   'Content-Type': 'application/json',
@@ -18,8 +21,6 @@ export class AuthService {
   private readonly IDENTITY = 'identity';
   private readonly PASSWORD_TOKEN = 'passwordToken';
 
-  // private apiUrl: string = 'http://localhost/api-php/api';
-  private apiUrl: string = 'https://linen-hyena-301899.hostingersite.com';
   private tokenKey = 'auth_token';
   public tokenAuth: Token = {} as Token;
 
@@ -29,7 +30,7 @@ export class AuthService {
 
   // Metodo Login
   login(credentials: {document: string, password: string}): Observable<any> {
-    const url = `${ this.apiUrl }/login`;
+    const url = `${ apiUrl }/login`;
     return this.http.post<any>(url, credentials, {headers});
   }
 
@@ -40,7 +41,7 @@ export class AuthService {
       Authorization: `Bearer ${token}`,
     };
     return this.http.post<{ valid: boolean }>(
-      `${this.apiUrl}/token/validate`,
+      `${apiUrl}/token/validate`,
       {}, // 👈 body vacío
       { headers } // 👈 aquí van los headers de verdad
     ).pipe(
@@ -63,7 +64,7 @@ export class AuthService {
   setRefreshToken(refreshToken: RefreshTokenRequest): Observable<boolean> {
     // console.log('weoooooo');
 
-    return this.http.post<Token>(`${this.apiUrl}/login/refresh`, refreshToken).pipe(
+    return this.http.post<Token>(`${apiUrl}/login/refresh`, refreshToken).pipe(
       map(( response ) => {
         // console.log('refresh', response);
         if (!response) {
@@ -150,6 +151,25 @@ export class AuthService {
       return null;
     }
 
+  }
+
+  getUserNameAndRole() {
+    const token = this.getToken();
+    if (!token || !token.accessToken) return null;
+
+    try {
+      const decodedToken: any = jwtDecode(token.accessToken);  // Decodifica el token JWT
+
+      const userName = decodedToken?.userName || null;
+      const role = decodedToken?.role || null;
+
+      if (!userName && !role) return null;
+
+      return { userName, role };  // Devuelve el rol (por ejemplo, "admin")
+    } catch (error) {
+      console.error('Error al decodificar el token', error);
+      return null;
+    }
   }
 
   // Save Token in localStorage

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MemberListComponent } from './pages/member-list/member-list.component';
 import { MemberFormComponent } from './pages/member-form/member-form.component';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { AdminGuard } from '../auth/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -33,7 +34,7 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: MemberFormComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, AdminGuard],
   //   canActivate: [NgxPermissionsGuard],
   //   data: {
   //     permissions: {

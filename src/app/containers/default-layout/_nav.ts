@@ -25,30 +25,30 @@ export const navItems: INavData[] = [
     title: true,
     roles: ['admin'],
   },
-  {
-    name: 'Mantenimientos',
-    url: '/locations',
-    iconComponent: { name: 'cil-settings' },
-    roles: ['admin'],
-    children: [
-      {
-        name: 'Provincias',
-        url: '/locations/provinces'
-      },
-      {
-        name: 'Municipios',
-        url: '/locations/municipality'
-      },
-      {
-        name: 'Region',
-        url: '/locations/region'
-      },
-      {
-        name: 'Zona',
-        url: '/locations/zone'
-      }
-    ]
-  },
+  // {
+  //   name: 'Mantenimientos',
+  //   url: '/locations',
+  //   iconComponent: { name: 'cil-settings' },
+  //   roles: ['admin'],
+  //   children: [
+  //     {
+  //       name: 'Provincias',
+  //       url: '/locations/provinces'
+  //     },
+  //     {
+  //       name: 'Municipios',
+  //       url: '/locations/municipality'
+  //     },
+  //     {
+  //       name: 'Region',
+  //       url: '/locations/region'
+  //     },
+  //     {
+  //       name: 'Zona',
+  //       url: '/locations/zone'
+  //     }
+  //   ]
+  // },
   {
     name: 'Usuarios',
     url: '/access',

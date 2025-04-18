@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UsersListComponent } from './pages/users-list/users-list.component';
 import { UsersFormComponent } from './pages/users-form/users-form.component';
 import { AuthGuard } from '../../auth/guards/auth.guard';
+import { AdminGuard } from '../../auth/guards/admin.guard';
 
 
 
@@ -33,7 +34,7 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: UsersFormComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, AdminGuard],
   //   canActivate: [NgxPermissionsGuard],
   //   data: {
   //     permissions: {

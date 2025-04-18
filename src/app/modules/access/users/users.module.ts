@@ -10,6 +10,7 @@ import { FormModule, PaginationModule } from '@coreui/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { SharedModule } from '../../../shared/shared.module';
+import { IconModule, IconSetModule } from '@coreui/icons-angular';
 
 
 @NgModule({
@@ -23,6 +24,8 @@ import { SharedModule } from '../../../shared/shared.module';
     ReactiveFormsModule,
     NgxMaskModule.forChild(),
     SharedModule,
+    IconModule,
+    IconSetModule,
   ],
   exports: [],
   declarations: [

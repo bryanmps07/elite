@@ -2,29 +2,34 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Members } from '../interfaces/member.interfaces';
+import { Member, Members } from '../interfaces/member.interfaces';
+import { environment } from '../../../../environments/environments';
+
+const apiUrl = `${environment.apiUrl}`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class MembersService {
 
-  // private apiUrl: string = 'http://localhost/api-php/api';
-  private apiUrl: string = 'https://linen-hyena-301899.hostingersite.com';
-
   constructor( private http: HttpClient, private authService: AuthService ) { }
 
-
   createMember(data: any): Observable<any> {
-
-    const url = `${ this.apiUrl }/members`;
+    const url = `${ apiUrl }/members`;
 
     return this.http.post( url, data ).pipe(
       catchError( err => {
         return throwError(() => err);
       })
     );
+  }
 
+  updateMember(memberId: string | null, memberForm: any): Observable<Member | null> {
+    const url = `${ apiUrl }/members`;
+
+    return this.http.put<Member | null>( `${url}/${memberId}`, memberForm ).pipe(
+      catchError( err => throwError(() => err))
+    );
   }
 
   searchMembers( params: {
@@ -34,7 +39,7 @@ export class MembersService {
     region_id?: string;
     zone_id?: string;
   }): Observable<Members> {
-      let url = `${this.apiUrl}/members`;
+      let url = `${apiUrl}/members`;
       let httpParams = new HttpParams();
 
       if (params.page) httpParams = httpParams.set('page', params.page.toString());
@@ -44,5 +49,12 @@ export class MembersService {
       if (params.zone_id) httpParams = httpParams.set('zone_id', params.zone_id);
 
       return this.http.get<Members>( url, {params: httpParams} );
-    }
+  }
+
+  getMemberById(memberId: string): Observable<Member[]> {
+
+    return this.http.get<Member[]>(
+      `${apiUrl}/members/${memberId}`
+    );
+  }
 }

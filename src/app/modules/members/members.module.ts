@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../shared/shared.module';
+import { IconModule, IconSetModule } from '@coreui/icons-angular';
 
 
 @NgModule({
@@ -27,7 +28,9 @@ import { SharedModule } from '../../shared/shared.module';
     ReactiveFormsModule,
     NgxMaskModule.forChild(),
     NgSelectModule,
-    SharedModule
+    SharedModule,
+    IconModule,
+    IconSetModule,
   ]
 })
 export class MembersModule { }

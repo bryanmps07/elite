@@ -2,73 +2,83 @@
   <c-col class="col-12">
     <c-card>
       <c-card-header>
-        <c-row>
-          <label cLabel="col" class="col-sm-1" for="search">
-            Buscar:
-          </label>
-          <c-col [sm]="3">
+        <c-row class="align-items-center g-2"> <!-- g-2 para separar -->
+
+          <!-- Buscar -->
+          <c-col xs="12" sm="2" md="1">
+            <label cLabel for="search">Buscar:</label>
+          </c-col>
+
+          <c-col xs="12" sm="10" md="3">
             <input
               type="text"
               cFormControl
               id="search"
+              class="w-100"
               [value]="initialValue"
               [placeholder]="placeholder"
-              (keyup)="onKeyPress( txtInput.value )"
+              (keyup)="onKeyPress(txtInput.value)"
               #txtInput
             />
           </c-col>
 
-          <!-- <form [formGroup]="sharedForm"> -->
-            <ng-container *ngIf="showCoordinator">
-              <c-col class="col-sm-2" >
-                <select
-                    cSelect
-                    id="coordinator"
-                    aria-label="Default select example"
-                    (change)="onCoordinatorChange($event)"
-                    required
-                  >
-                    <option value="">Coordinador...</option>
-                    <option *ngFor="let coordinator of coordinators" [value]="coordinator.id">{{ coordinator.first_name | titlecase }} {{ coordinator.last_name | titlecase }}</option>
-                  </select>
-              </c-col>
-            </ng-container>
-
-            <ng-container *ngIf="showRegion">
-            <c-col class="col-sm-2">
+          <!-- Coordinador -->
+          <ng-container *ngIf="showCoordinator">
+            <c-col xs="12" sm="6" md="2">
               <select
-                  cSelect
-                  id="region"
-                  aria-label="Default select example"
-                  [(ngModel)]="regionSeleccionada"
-                  (change)="onRegionChange($event)"
-                  required
-                >
-                  <option value="">Region...</option>
-                  <option *ngFor="let region of regions" [value]="region.id">{{ region.name | uppercase }}</option>
-                </select>
-              </c-col>
-            </ng-container>
+                cSelect
+                id="coordinator"
+                class="w-100"
+                (change)="onCoordinatorChange($event)"
+                required
+              >
+                <option value="">Coordinador...</option>
+                <option *ngFor="let coordinator of coordinators" [value]="coordinator.id">
+                  {{ coordinator.first_name | titlecase }} {{ coordinator.last_name | titlecase }}
+                </option>
+              </select>
+            </c-col>
+          </ng-container>
 
-            <ng-container *ngIf="showZone">
-              <c-col class="col-sm-2">
-                <select
+          <!-- Región -->
+          <ng-container *ngIf="showRegion">
+            <c-col xs="12" sm="6" md="2">
+              <select
+                cSelect
+                id="region"
+                class="w-100"
+                [(ngModel)]="regionSeleccionada"
+                (change)="onRegionChange($event)"
+                required
+              >
+                <option value="">Región...</option>
+                <option *ngFor="let region of regions" [value]="region.id">
+                  {{ region.name | uppercase }}
+                </option>
+              </select>
+            </c-col>
+          </ng-container>
+
+          <!-- Zona -->
+          <ng-container *ngIf="showZone">
+            <c-col xs="12" sm="6" md="2">
+              <select
                 cSelect
                 id="zone"
-                aria-label="Default select example"
+                class="w-100"
                 (change)="onZoneChange($event)"
                 required
-                >
-                  <option value="">Zona...</option>
-                  <option *ngFor="let zone of zones" [value]="zone.id">{{ zone.name | uppercase }}</option>
-                </select>
-              </c-col>
-            </ng-container>
-          <!-- </form> -->
+              >
+                <option value="">Zona...</option>
+                <option *ngFor="let zone of zones" [value]="zone.id">
+                  {{ zone.name | uppercase }}
+                </option>
+              </select>
+            </c-col>
+          </ng-container>
 
         </c-row>
       </c-card-header>
     </c-card>
-
   </c-col>
 </c-row>

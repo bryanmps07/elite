@@ -35,6 +35,7 @@ placeholder="Buscar por nombre o cedula"
             <th scope="col">Zona</th>
             <th scope="col">Coordinador</th>
             <th scope="col">Inscripcion</th>
+            <th *ngIf="role === 'admin'" scope="col">Acciones</th>
           </tr>
           </thead>
           <tbody *ngIf="members.length > 0; else noMembers">
@@ -42,11 +43,22 @@ placeholder="Buscar por nombre o cedula"
               <td scope="row">{{ member.id }}</td>
               <th>{{ member.first_name | titlecase }} {{ member.last_name | titlecase }}</th>
               <td>{{ member.document | pipeDocument }}</td>
-              <td>{{ member.cell_phone | phoneFormat }}</td>
+              <td>{{ member.phone | phoneFormat }}</td>
               <td>{{ member.gender || '' | titlecase }}</td>
               <td>{{ member.zone.name | titlecase }}</td>
               <td>{{ member.register?.coordinator_name || 'Editor' | titlecase }}</td>
               <td>{{ member.create_date | dateFormat }}</td>
+              <td *ngIf="role === 'admin'">
+                <!-- Botón Editar -->
+                <button
+                  cButton
+                  color="warning"
+                  size="sm"
+                  class="me-2"
+                  [routerLink]="['./edit/',member.id]">
+                  <c-icon [name]="'cilPencil'" size="sm" title="Editar"></c-icon>
+                </button>
+              </td>
             </tr>
           </tbody>
           <ng-template #noMembers>

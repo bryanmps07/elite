@@ -1,3 +1,5 @@
+<app-toasts [color]="colorToats" [txtToats]="txtToast"></app-toasts>
+
 <app-search-box
 (onDebounce)="loadUsers(currentPage, $event)"
 [initialValue]="initialValue"
@@ -24,6 +26,7 @@ placeholder="Buscar por nombre o cedula"
             <th scope="col">Celular</th>
             <th scope="col">Rol</th>
             <th scope="col">Fecha Creacion</th>
+            <th *ngIf="role === 'admin'" scope="col">Acciones</th>
           </tr>
           </thead>
           <tbody>
@@ -35,6 +38,41 @@ placeholder="Buscar por nombre o cedula"
             <td>{{ user.phone | phoneFormat }}</td>
             <td>{{ user.role?.name || '' | titlecase }}</td>
             <td>{{'09/04/2025' | dateFormat }}</td>
+            <td *ngIf="role === 'admin'">
+              <!-- Botón Editar -->
+              <button
+                cButton
+                color="warning"
+                size="sm"
+                class="me-2"
+                [routerLink]="['./edit/',user.id]">
+                <c-icon [name]="'cilPencil'" size="sm" title="Editar"></c-icon>
+              </button>
+
+              <!-- Botón Desactivar -->
+              <ng-container *ngIf="user.status === 1; else onActivate">
+                <button
+                  cButton
+                  color="danger"
+                  size="sm"
+                  size="sm"
+                  (click)="activateUser(user.id, user.status)">
+                  <c-icon [name]="'cilBan'" size="sm" title="Desactivar"></c-icon>
+                </button>
+              </ng-container>
+
+              <ng-template #onActivate>
+                <button
+                  cButton
+                  color="success"
+                  size="sm"
+                  size="sm"
+                  (click)="activateUser(user.id, user.status)">
+                  <c-icon [name]="'cil-check-circle'" size="sm" title="Activar"></c-icon>
+                </button>
+              </ng-template>
+            </td>
+
           </tr>
           </tbody>
         </table>

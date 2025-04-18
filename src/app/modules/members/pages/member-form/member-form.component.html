@@ -26,14 +26,56 @@
 
           <c-col [md]="3">
             <label cLabel for="first_name">Nombre <span class="field-required">*</span></label>
-            <input cFormControl id="first_name"  type="text" formControlName="first_name" placeholder="Digita un nombre" required/>
-            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+            <input
+              cFormControl
+              id="first_name"
+              type="text"
+              formControlName="first_name"
+              placeholder="Digita un nombre"
+              required
+              [class.is-invalid]="memberForm.get('first_name')?.invalid && memberForm.get('first_name')?.touched"
+              />
+
+              <!-- Feedback personalizado -->
+              <c-form-feedback *ngIf="memberForm.get('first_name')?.errors?.['required']">
+                El nombre es requerido.
+              </c-form-feedback>
+              <c-form-feedback *ngIf="memberForm.get('first_name')?.errors?.['pattern']">
+                Solo se permiten letras y espacios.
+              </c-form-feedback>
+              <c-form-feedback *ngIf="memberForm.get('first_name')?.errors?.['onlySpace']">
+                El campo no puede estar vacío o tener solo espacios.
+              </c-form-feedback>
+              <c-form-feedback *ngIf="memberForm.get('first_name')?.valid">
+                ¡Luce bien!
+              </c-form-feedback>
           </c-col>
 
           <c-col [md]="3">
             <label cLabel for="last_name">Apellido <span class="field-required">*</span></label>
-            <input cFormControl id="last_name" required type="text" formControlName="last_name" placeholder="Digita un apellido" />
-            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+            <input
+              cFormControl
+              id="last_name"
+              type="text"
+              formControlName="last_name"
+              placeholder="Digita un apellido"
+              required
+              [class.is-invalid]="memberForm.get('last_name')?.invalid && memberForm.get('last_name')?.touched"
+              />
+
+            <!-- Feedback personalizado -->
+            <c-form-feedback *ngIf="memberForm.get('last_name')?.errors?.['required']">
+              El Apellido es requerido.
+            </c-form-feedback>
+            <c-form-feedback *ngIf="memberForm.get('last_name')?.errors?.['pattern']">
+              Solo se permiten letras y espacios.
+            </c-form-feedback>
+            <c-form-feedback *ngIf="memberForm.get('last_name')?.errors?.['onlySpace']">
+              El campo no puede estar vacío o tener solo espacios.
+            </c-form-feedback>
+            <c-form-feedback [valid]="true">
+              ¡Luce bien!
+            </c-form-feedback>
           </c-col>
 
           <c-col [md]="3">
@@ -44,13 +86,22 @@
 
           <c-col [md]="3">
             <label cLabel for="phone">Tel&eacute;fono <span class="field-required">*</span></label>
-            <input cFormControl id="phone" type="text" placeholder="809-555-5555" mask="(000)-000-0000" [showMaskTyped]="true" formControlName="phone" required />
-            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+            <input
+              cFormControl
+              id="phone"
+              type="tel"
+              formControlName="phone"
+              placeholder="809-555-5555"
+              mask="(000)-000-0000"
+              [showMaskTyped]="true"
+              required
+              />
+              <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
           </c-col>
 
           <c-col [md]="3">
-            <label cLabel for="cell_phone">Celular <span class="field-required">*</span></label>
-            <input cFormControl id="cell_phone" type="text" placeholder="809-555-5555" mask="(000)-000-0000" [showMaskTyped]="true" formControlName="cell_phone" />
+            <label cLabel for="cell_phone">Celular</label>
+            <input cFormControl id="cell_phone" type="tel" placeholder="809-555-5555" mask="(000)-000-0000" [showMaskTyped]="true" formControlName="cell_phone" />
             <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
           </c-col>
 
@@ -86,8 +137,29 @@
 
           <c-col [md]="4">
             <label cLabel for="campus_college">Recinto <span class="field-required">*</span></label>
-            <input cFormControl id="campus_college" required type="text" formControlName="campus_college" placeholder="Digita el nombre de un recinto" />
-            <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
+            <input
+              cFormControl
+              id="campus_college"
+              type="text"
+              formControlName="campus_college"
+              placeholder="Digita el nombre de un recinto"
+              required
+              [class.is-invalid]="memberForm.get('campus_college')?.invalid && memberForm.get('campus_college')?.touched"
+              />
+
+            <!-- Feedback personalizado -->
+            <c-form-feedback *ngIf="memberForm.get('campus_college')?.errors?.['required']">
+              El Recinto es requerido.
+            </c-form-feedback>
+            <c-form-feedback *ngIf="memberForm.get('campus_college')?.errors?.['pattern']">
+              Solo se permiten letras y espacios.
+            </c-form-feedback>
+            <c-form-feedback *ngIf="memberForm.get('campus_college')?.errors?.['onlySpace']">
+              El campo no puede estar vacío o tener solo espacios.
+            </c-form-feedback>
+            <c-form-feedback [valid]="true">
+              ¡Luce bien!
+            </c-form-feedback>
           </c-col>
 
 
@@ -175,7 +247,7 @@
 
           <c-col [xs]="12">
             <button cButton class="me-1" color="primary" type="submit" [disabled]="memberForm.invalid">
-              Regitrar
+              {{formAction}}
             </button>
             <button (click)="onReset()" cButton color="secondary" type="button">
               Borrar
