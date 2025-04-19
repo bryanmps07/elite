@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   hmr: false,
-  apiUrl: 'http://localhost/api-php'
+  apiUrl: 'linen-hyena-301899.hostingersite.com'
 };
 
 /*
