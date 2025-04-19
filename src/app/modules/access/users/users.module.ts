@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { SharedModule } from '../../../shared/shared.module';
 import { IconModule, IconSetModule } from '@coreui/icons-angular';
+import { UsersPasswordFormComponent } from './pages/users-password-form/users-password-form.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { IconModule, IconSetModule } from '@coreui/icons-angular';
   exports: [],
   declarations: [
     UsersFormComponent,
-    UsersListComponent
+    UsersListComponent,
+    UsersPasswordFormComponent
   ],
   providers: [],
 })

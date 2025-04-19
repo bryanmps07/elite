@@ -55,7 +55,7 @@ placeholder="Buscar por nombre o cedula"
                   cButton
                   color="danger"
                   size="sm"
-                  size="sm"
+                  class="me-2"
                   (click)="activateUser(user.id, user.status)">
                   <c-icon [name]="'cilBan'" size="sm" title="Desactivar"></c-icon>
                 </button>
@@ -66,11 +66,20 @@ placeholder="Buscar por nombre o cedula"
                   cButton
                   color="success"
                   size="sm"
-                  size="sm"
+                  class="me-2"
                   (click)="activateUser(user.id, user.status)">
                   <c-icon [name]="'cil-check-circle'" size="sm" title="Activar"></c-icon>
                 </button>
               </ng-template>
+
+              <!-- Botón password -->
+              <button
+                cButton
+                color="info"
+                size="sm"
+                [routerLink]="['./password/',user.id]">
+                <c-icon [name]="'cilLockLocked'" size="sm" title="Password"></c-icon>
+              </button>
             </td>
 
           </tr>
@@ -79,6 +88,9 @@ placeholder="Buscar por nombre o cedula"
 
 
         <br>
+        <div *ngIf="pagination">
+          <div align="start">Total: {{ pagination.total }} resultados.</div>
+        </div>
 
         <c-pagination *ngIf="pagination && users?.length" align="end" aria-label="Page navigation example">
 

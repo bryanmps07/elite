@@ -237,7 +237,7 @@ export class MemberFormComponent  implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['../../'], { relativeTo: this.route });
-        }, 3000);
+        }, 2000);
       },
       error: (err) => {
         console.log('Error al actualizar Miembro', err);

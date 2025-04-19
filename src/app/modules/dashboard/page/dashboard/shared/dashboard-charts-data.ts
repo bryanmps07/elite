@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { getStyle, hexToRgba } from '@coreui/utils';
+import { DashboardService } from '../../../dashboard.service';
+import { Dashboard } from '../../../interfaces/dashboard.interfaces';
 
 export interface IChartProps {
   data?: any;
@@ -16,14 +18,31 @@ export interface IChartProps {
   providedIn: 'any'
 })
 export class DashboardChartsData {
-  constructor() {
+  constructor(private dashboardService: DashboardService) {
+    this.loadDashboard();
     this.initMainChart();
   }
 
+  public dash?: Dashboard;
   public mainChart: IChartProps = {};
 
   public random(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  loadDashboard(): void {
+    this.dashboardService.loadDashboard().subscribe(
+      response => {
+        this.dash = response;
+        // console.log('Data from API:', this.dash);
+
+        // Initialize chart with actual data
+        this.initMainChart();
+      },
+      error => {
+        console.error('Error loading dashboard', error);
+      }
+    );
   }
 
   initMainChart(period: string = 'Month') {
@@ -32,55 +51,57 @@ export class DashboardChartsData {
     const brandInfoBg = hexToRgba(getStyle('--cui-info') ?? '#20a8d8', 10);
     const brandDanger = getStyle('--cui-danger') || '#f86c6b';
 
-    // mainChart
-    // mainChart
+    // Main chart initialization
     this.mainChart['elements'] = period === 'Month' ? 12 : 27;
-    this.mainChart['Data1'] = [];
-    this.mainChart['Data2'] = [];
-    this.mainChart['Data3'] = [];
+    this.mainChart['Data1'] = [];  // Total members
+    this.mainChart['Data2'] = [];  // Male members
+    this.mainChart['Data3'] = [];  // Female members
 
-    // generate random values for mainChart
-    for (let i = 0; i <= this.mainChart['elements']; i++) {
-      this.mainChart['Data1'].push(this.random(50, 240));
-      this.mainChart['Data2'].push(this.random(20, 160));
-      this.mainChart['Data3'].push(65);
-    }
-
+    // Initialize the labels for all months (January to December)
     let labels: string[] = [];
     if (period === 'Month') {
       labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+        'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
       ];
     } else {
-      /* tslint:disable:max-line-length */
-      const week = [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-      ];
+      const week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
       labels = week.concat(week, week, week);
+    }
+
+    // Assuming the API data provides monthly data, we can dynamically adjust the labels based on the available months
+    let monthLabels: string[] = [];
+    if (this.dash) {
+      // Create a map of months (from 1 to 12)
+      const monthMap = new Array(12).fill(0).map((_, index) => ({
+        month: new Date(2021, index).toLocaleString('default', { month: 'long' }),
+        total: 0,
+        male: 0,
+        female: 0
+      }));
+
+      // Iterate through API data and populate the monthMap
+      this.dash.chart.forEach((data: any) => {
+        const monthIndex = data.month - 1; // Subtract 1 to match 0-based index
+        monthMap[monthIndex].total = data.total_members;
+        monthMap[monthIndex].male = data.male;
+        monthMap[monthIndex].female = data.female;
+      });
+
+      // Set monthLabels and chart data
+      monthLabels = monthMap.map(item => item.month);
+
+      // Update chart data to match monthMap
+      this.mainChart['Data1'] = monthMap.map(item => item.total);
+      this.mainChart['Data2'] = monthMap.map(item => item.male);
+      this.mainChart['Data3'] = monthMap.map(item => item.female);
     }
 
     const colors = [
       {
         // brandInfo
         backgroundColor: brandInfoBg,
-        borderColor: brandInfo,
+        borderColor: brandSuccess || '#4dbd74',
         pointHoverBackgroundColor: brandInfo,
         borderWidth: 2,
         fill: true
@@ -88,7 +109,7 @@ export class DashboardChartsData {
       {
         // brandSuccess
         backgroundColor: 'transparent',
-        borderColor: brandSuccess || '#4dbd74',
+        borderColor: brandInfo,
         pointHoverBackgroundColor: '#fff'
       },
       {
@@ -96,25 +117,26 @@ export class DashboardChartsData {
         backgroundColor: 'transparent',
         borderColor: brandDanger || '#f86c6b',
         pointHoverBackgroundColor: brandDanger,
-        borderWidth: 1,
-        borderDash: [8, 5]
+        borderWidth: 2,
+        // borderDash: [8, 5]
+
       }
     ];
 
     const datasets = [
       {
         data: this.mainChart['Data1'],
-        label: 'Current',
+        label: 'Total Miembros',
         ...colors[0]
       },
       {
         data: this.mainChart['Data2'],
-        label: 'Previous',
+        label: 'Hombres',
         ...colors[1]
       },
       {
         data: this.mainChart['Data3'],
-        label: 'BEP',
+        label: 'Mujeres',
         ...colors[2]
       }
     ];
@@ -145,10 +167,10 @@ export class DashboardChartsData {
         },
         y: {
           beginAtZero: true,
-          max: 250,
+          max: Math.max(...this.mainChart['Data1']),
           ticks: {
             maxTicksLimit: 5,
-            stepSize: Math.ceil(250 / 5)
+            stepSize: Math.ceil(Math.max(...this.mainChart['Data1']) / 5)
           }
         }
       },
@@ -169,7 +191,7 @@ export class DashboardChartsData {
     this.mainChart.options = options;
     this.mainChart.data = {
       datasets,
-      labels
+      labels: monthLabels
     };
   }
 

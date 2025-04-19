@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardChartsData, IChartProps } from './shared/dashboard-charts-data';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { cilChartPie, cilArrowRight } from '@coreui/icons';
+import { DashboardService } from '../../dashboard.service';
+import { Dashboard } from '../../interfaces/dashboard.interfaces';
+import { Chart, registerables } from 'chart.js';
+import { AuthService } from '../../../auth/auth.service';
+
 
 
 interface IUser {
@@ -18,6 +23,8 @@ interface IUser {
   color: string;
 }
 
+
+
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -25,7 +32,16 @@ interface IUser {
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  constructor(private chartsData: DashboardChartsData) {
+
+  public currentYear = new Date().getFullYear();
+  public dash?: Dashboard;
+  public role: string | null = '';
+
+  constructor(
+    private chartsData: DashboardChartsData,
+    private dashboardService: DashboardService,
+    private authService: AuthService,
+  ) {
   }
 
   icons = {
@@ -120,16 +136,40 @@ export class DashboardComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.loadDashboard();
     this.initCharts();
+    this.getRole();
+
+  }
+
+  getRole(): void {
+    this.role = this.authService.getRole();
   }
 
   initCharts(): void {
     this.mainChart = this.chartsData.mainChart;
+    // this.mainChart.
+    // console.log('este', this.mainChart);
+
   }
 
-  setTrafficPeriod(value: string): void {
-    this.trafficRadioGroup.setValue({ trafficRadio: value });
-    this.chartsData.initMainChart(value);
-    this.initCharts();
+  loadDashboard(): void {
+    this.dashboardService.loadDashboard().subscribe(
+     response => {
+      // console.log(response);
+      this.dash = response
+
+     },
+     error => {
+      console.error('Error loading dashboard', error);
+     }
+    )
   }
+
+  getProgress(number: number | undefined, total: number | undefined): number {
+    return (number && total) ? (number / total) * 100 : 0;
+  }
+
+
+
 }

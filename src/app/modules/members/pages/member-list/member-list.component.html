@@ -70,6 +70,9 @@ placeholder="Buscar por nombre o cedula"
 
 
         <br>
+        <div *ngIf="pagination">
+          <div align="start">Total: {{ pagination.total }} resultados.</div>
+        </div>
 
         <c-pagination *ngIf="pagination && members?.length" align="end" aria-label="Page navigation example">
 

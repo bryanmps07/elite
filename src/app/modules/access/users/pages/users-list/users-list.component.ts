@@ -3,7 +3,7 @@ import { UsersService } from '../../users.service';
 import { Pagination, User } from '../../interfaces/user.interfaces';
 import { AuthService } from '../../../../auth/auth.service';
 import { IconSetService } from '@coreui/icons-angular';
-import { cilPencil, cilBan, cilCheckCircle } from '@coreui/icons';
+import { cilPencil, cilBan, cilCheckCircle, cilLockLocked  } from '@coreui/icons';
 import { ToastsComponent } from '../../../../../shared/components/toasts/toasts.component';
 
 @Component({
@@ -31,7 +31,7 @@ export class UsersListComponent implements OnInit{
     private authService: AuthService,
     public iconSet: IconSetService
   ) {
-    this.iconSet.icons = { cilPencil, cilBan, cilCheckCircle };
+    this.iconSet.icons = { cilPencil, cilBan, cilCheckCircle, cilLockLocked };
   }
 
   ngOnInit(): void {
@@ -59,7 +59,7 @@ export class UsersListComponent implements OnInit{
     this.userService.searchUsers( page, term )
       .subscribe( response => {  // Asegúrate de que la respuesta sea de tipo 'Users'
         this.users = response.data;  // 'data' es un arreglo de 'User[]'
-        // console.log(this.users);
+        // console.log(response);
 
         // Asignar la paginación
         this.pagination = response.pagination;

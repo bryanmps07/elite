@@ -63,6 +63,14 @@ export class UsersService {
     );
   }
 
+  updatePassword(userId: string | null, passwordForm: any): Observable<any> {
+    // console.log(userForm);
+
+    return this.http.put<any>(
+      `${apiUrl}/usuarios/password/${userId}`, passwordForm
+    );
+  }
+
   loadCoodinatorSelect( userId?: string ): Observable<Coordinators> {
     const role = this.authService.getRole();
     const url = `${apiUrl}/coordinators`;
