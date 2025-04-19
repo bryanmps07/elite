@@ -116,7 +116,7 @@ Chart.register(...registerables);opdown></app-widgets-dropdown> -->
 
 <!-- <app-widgets-brand [withCharts]="true"></app-widgets-brand> -->
 
-<c-row *ngIf="role === 'admin'">
+<c-row *ngIf="role === 'admin' || role === 'digitador'">
   <c-col xs>
     <c-card class="mb-4">
       <c-card-header>Regions {{ "&" }} Zonas</c-card-header>
@@ -222,7 +222,7 @@ Chart.register(...registerables);opdown></app-widgets-dropdown> -->
   </c-col>
 </c-row>
 
-<c-row *ngIf="role === 'admin'">
+<c-row *ngIf="role === 'admin' || role === 'digitador'">
   <c-col xs>
     <c-card class="mb-4">
       <c-card-header>Coordinadores</c-card-header>

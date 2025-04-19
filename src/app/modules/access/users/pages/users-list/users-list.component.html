@@ -37,7 +37,7 @@ placeholder="Buscar por nombre o cedula"
             <td>{{ user.last_name | titlecase }}</td>
             <td>{{ user.phone | phoneFormat }}</td>
             <td>{{ user.role?.name || '' | titlecase }}</td>
-            <td>{{'09/04/2025' | dateFormat }}</td>
+            <td>{{ user.create_date | dateFormat }}</td>
             <td *ngIf="role === 'admin'">
               <!-- Botón Editar -->
               <button
