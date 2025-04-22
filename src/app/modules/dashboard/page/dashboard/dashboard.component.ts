@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardChartsData, IChartProps } from './shared/dashboard-charts-data';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { cilChartPie, cilArrowRight } from '@coreui/icons';
+import { cilChartPie, cilArrowRight, cilCalendar, cilUserFemale, cilUser } from '@coreui/icons';
 import { DashboardService } from '../../dashboard.service';
 import { Dashboard } from '../../interfaces/dashboard.interfaces';
 import { Chart, registerables } from 'chart.js';
@@ -47,6 +47,9 @@ export class DashboardComponent implements OnInit {
   icons = {
     cilChartPie,
     cilArrowRight,
+    cilCalendar,
+    cilUserFemale,
+    cilUser
   };
 
   public users: IUser[] = [

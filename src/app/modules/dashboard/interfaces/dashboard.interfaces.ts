@@ -11,7 +11,7 @@ export interface Dashboard {
 
 export interface Cards {
   total_members:    number;
-  new_week_members: number;
+  new_month_members: number;
   males:            number;
   female:           number;
 }

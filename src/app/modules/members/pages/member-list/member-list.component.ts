@@ -10,7 +10,8 @@ import { Zone } from '../../../location/zone/interfaces/zone.interfaces';
 import { RegionService } from '../../../location/region/region.service';
 import { ZoneService } from '../../../location/zone/zone.service';
 import { IconSetService } from '@coreui/icons-angular';
-import { cilPencil } from '@coreui/icons';
+import { cilCloudDownload, cilPencil } from '@coreui/icons';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-member-list',
@@ -27,6 +28,7 @@ export class MemberListComponent {
 
   public role: string | null = '';
   public showSelects: boolean = false;
+  public showDownload: boolean = false;
 
   public coordinators: User[] = [];
   public selectCoordinator: string = '';
@@ -48,7 +50,7 @@ export class MemberListComponent {
     private iconSet: IconSetService
   ) {
     this.showSelectByRole();
-    this.iconSet.icons = { cilPencil };
+    this.iconSet.icons = { cilPencil, cilCloudDownload };
   }
 
 
@@ -64,10 +66,6 @@ export class MemberListComponent {
       this.initialValue = '';
     }
 
-    // if (term === '' && page > 1) {
-    //   page = 1;
-    // }
-
     this.membersService.searchMembers({
       page,
       search: term,
@@ -77,7 +75,7 @@ export class MemberListComponent {
     })
       .subscribe( response => {  // Asegúrate de que la respuesta sea de tipo 'Users'
         this.members = response.data;  // 'data' es un arreglo de 'User[]'
-        // console.log(this.users);
+        // console.log(this.members);
 
         // Asignar la paginación
         this.pagination = response.pagination;
@@ -95,9 +93,14 @@ export class MemberListComponent {
       this.loadCoordinator();
       this.loadRegions();
     }
+
+    if ( this.role === 'admin' ) {
+      this.showDownload = true;
+    }
   }
 
   loadCoordinator(): void {
+    this.loadZones();
     this.userService.loadCoodinatorSelect().subscribe(response => {
       if (response && response.data) {  // Verifica que la respuesta contenga la propiedad 'data'
         this.coordinators = response.data;  // 'data' es un arreglo de 'User[]'
@@ -112,7 +115,13 @@ export class MemberListComponent {
   onCoordinatorChange(value: string): void {
     this.selectCoordinator = value;
     this.loadZones(); // ya estás haciéndolo
-    this.loadMembers(this.currentPage, this.initialValue, this.selectCoordinator, this.regionSeleccionada.toString(), this.selectZones.toString());
+    this.loadMembers(
+            this.currentPage,
+            this.initialValue,
+            this.selectCoordinator,
+            this.regionSeleccionada.toString(),
+            this.selectZones.toString()
+          );
   }
 
   loadRegions(): void {
@@ -124,20 +133,63 @@ export class MemberListComponent {
 
   onRegionChange(value: string): void {
     this.regionSeleccionada = value;
-    this.loadZones();
+    this.loadZoneSelected(value);
     this.loadMembers(this.currentPage, this.initialValue, this.selectCoordinator, this.regionSeleccionada.toString(), this.selectZones.toString());
   }
 
-  loadZones(): void {
+  loadZones(value: string = ''): void {
     this.zoneService.searchZones()
     .subscribe( response => {
       this.zones = response.data;
     });
   }
 
+  loadZoneSelected(value: string): void {
+    this.zoneService.getZonesByRegionId(value)
+      .subscribe( response => {
+       // Asigna la propiedad 'data' que contiene el arreglo de region
+      if (response && response.data && Array.isArray(response.data)) {
+        this.zones = response.data;
+        // console.log('Municipios:', this.municipalities);
+      } else {
+        console.error('La respuesta no tiene un arreglo válido de zonas:', response);
+      }
+    }, error => {
+      console.error('Error al obtener las zonas:', error);
+    });
+  }
+
   onZoneChange(value: string): void {
     this.selectZones = value;
+    // console.log(value);
+
     this.loadMembers(this.currentPage, this.initialValue, this.selectCoordinator, this.regionSeleccionada.toString(), this.selectZones.toString());
+  }
+
+  onDownloadExcel(term: string = '', coordinatorId: string = '', regionId: string = '', zoneId: string = ''): void {
+    // console.log('descarga');
+
+    this.membersService.getDataToDownloadMembers({
+      search: this.initialValue,
+      coordinator_id: this.selectCoordinator,
+      region_id: this.regionSeleccionada.toString(),
+      zone_id: this.selectZones.toString()
+    }).subscribe(
+        (response: Blob) => {
+        // Crea un enlace temporal para la descarga del archivo
+        const a = document.createElement('a');
+        const url = window.URL.createObjectURL(response);
+        a.href = url;
+        a.download = 'miembros.xlsx'; // Nombre del archivo descargado
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url); // Limpiar la URL creada
+      },
+      (error) => {
+        console.error('Error al descargar el archivo:', error);
+      }
+    );
+
   }
 
 

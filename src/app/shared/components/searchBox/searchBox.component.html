@@ -66,6 +66,7 @@
                 cSelect
                 id="zone"
                 class="w-100"
+                [(ngModel)]="zonaSeleccionada"
                 (change)="onZoneChange($event)"
                 required
               >
@@ -74,6 +75,19 @@
                   {{ zone.name | uppercase }}
                 </option>
               </select>
+            </c-col>
+          </ng-container>
+
+          <ng-container *ngIf="showDownload">
+            <c-col xs="12" sm="6" md="2">
+              <button
+                  cButton
+                  color="success"
+                  size="sm"
+                  class="me-2"
+                  (click)="onDownloadExcel($event)">
+                  <c-icon [name]="'cilCloudDownload'" size="sm" title="Desactivar"></c-icon>
+                </button>
             </c-col>
           </ng-container>
 

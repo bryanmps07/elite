@@ -5,13 +5,16 @@ placeholder="Buscar por nombre o cedula"
 [showCoordinator]="showSelects"
 [showRegion]="showSelects"
 [showZone]="showSelects"
+[showDownload]="showDownload"
 [coordinators]="coordinators"
 [regions]="regions"
 [zones]="zones"
-(onCoordinator)="onCoordinatorChange($event)"
 [regionSeleccionada]="regionSeleccionada"
+[zonaSeleccionada]="selectZones"
+(onCoordinator)="onCoordinatorChange($event)"
 (onRegion)="onRegionChange($event)"
 (onZone)="onZoneChange($event)"
+(onDownload)="onDownloadExcel($event)"
 ></app-search-box>
 
 <c-row>

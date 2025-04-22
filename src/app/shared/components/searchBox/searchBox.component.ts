@@ -32,6 +32,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   public showZone: boolean = false;
 
   @Input()
+  public showDownload: boolean = false;
+
+  @Input()
   public coordinators: User[] = [];
 
   @Input()
@@ -39,6 +42,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
   @Input()
   public regionSeleccionada: number | string = '';
+
+  @Input()
+  public zonaSeleccionada: number | string = '';
 
   @Input()
   public zones: Zone[] = [];
@@ -57,6 +63,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
   @Output()
   public onZone: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output()
+  public onDownload: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.debouncerSuscription = this.debouncer
@@ -94,6 +103,11 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   onZoneChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
     this.onZone.emit( value )
+  }
+
+  onDownloadExcel(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.onDownload.emit(value);
   }
 
 }
