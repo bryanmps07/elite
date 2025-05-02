@@ -1,14 +1,21 @@
 <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
   <c-container>
     <c-row class="justify-content-center">
-      <c-col md="5">
+      <c-col md="6">
         <c-card-group>
-          <c-card class="p-4">
+          <c-card class="p-3">
             <c-card-body>
 
               <form cForm (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-                <h1>Inicio de Sesion</h1>
-                <p class="text-medium-emphasis">Inicia Sesion en tu cuenta</p>
+                <c-row class="justify-content-center">
+                  <c-col class="col-md-12 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/logo-corriente.png" class="logo" alt="Elite-logo">
+                  </c-col>
+                  <c-col class="col-md-12 d-flex justify-content-center align-items-center">
+                    <h3><strong>Corriente Renovadora Moderna Elite</strong></h3>
+                  </c-col>
+                </c-row>
+                <p class="text-medium-emphasis text-center">Inicia Sesion en tu cuenta</p>
 
                 <c-input-group class="mb-3 form-group">
                   <span cInputGroupText>
