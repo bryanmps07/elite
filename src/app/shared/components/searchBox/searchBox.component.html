@@ -60,7 +60,7 @@
           </ng-container>
 
           <!-- Zona -->
-          <ng-container *ngIf="showZone">
+          <ng-container *ngIf="false">
             <c-col xs="12" sm="6" md="2">
               <select
                 cSelect
@@ -74,6 +74,24 @@
                 <option *ngFor="let zone of zones" [value]="zone.id">
                   {{ zone.name | uppercase }}
                 </option>
+              </select>
+            </c-col>
+          </ng-container>
+
+          <!-- Nuevo -->
+          <ng-container *ngIf="showNew">
+            <c-col xs="12" sm="4" md="2">
+              <select
+                cSelect
+                id="zone"
+                class="w-100"
+                [(ngModel)]="newSeleccionado"
+                (change)="onNewChange($event)"
+                required
+              >
+                <option value="">Nuevo...</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
               </select>
             </c-col>
           </ng-container>

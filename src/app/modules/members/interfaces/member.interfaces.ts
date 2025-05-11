@@ -17,6 +17,7 @@ export interface Member {
   address:           string;
   campus_college:    string;
   electoral_college: string;
+  new_member?:       number;
   create_date:       Date;
   province:          Location;
   municipality:      Location;

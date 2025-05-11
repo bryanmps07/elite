@@ -97,7 +97,7 @@
         <hr>
 
           <c-col [md]="6">
-            <label cLabel for="document">Cedula</label>
+            <label cLabel for="document">C&eacute;dula</label>
             <input cFormControl id="document" type="text" mask="000-0000000-0" [showMaskTyped]="true" formControlName="document" required/>
             <c-form-feedback [valid]="true">Luce Bien!</c-form-feedback>
           </c-col>
@@ -170,6 +170,25 @@
 
           <hr>
 
+          <ng-container *ngIf="showRegionalCordinatorContainer">
+            <c-col [md]="3">
+              <label cLabel for="coordinator">Coordinador Regional<span class="field-required"></span></label>
+                <select
+                  cSelect
+                  id="coordinator"
+                  formControlName="coordinator"
+                  aria-label="Default select example"
+                  (change)="onCoordinatorChange($event)"
+                >
+                  <option value="">Selecciona un coordinador...</option>
+                  <option *ngFor="let coordinator of coordinators" [value]="coordinator.id">{{ coordinator.first_name | titlecase }} {{ coordinator.last_name | titlecase }}</option>
+                </select>
+                <c-form-feedback [valid]="false">Por favor selecciona un coordinador.</c-form-feedback>
+            </c-col>
+
+            <hr>
+          </ng-container>
+
           <ng-container *ngIf="showAddressContainer">
 
             <c-col [md]="4">
@@ -197,7 +216,7 @@
             </c-col>
 
             <c-col [md]="4">
-              <label cLabel for="region">Region</label>
+              <label cLabel for="region">Regi&oacute;n</label>
               <select cSelect id="region" formControlName="region" aria-label="Default select example" (change)="onRegionChange($event)" required>
                 <option value="">Selecciona una regi&oacute;n...</option>
                 <option *ngFor="let region of regions" [value]="region.id">{{ region.name | uppercase }}</option>

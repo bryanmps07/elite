@@ -12,6 +12,7 @@ export interface User {
   address:      string;
   status:       number;
   create_date:  Date;
+  regionalCoordinator?: Location | null;
   role?:        Location | null;
   province?:    Location | null;
   municipality?: Location | null;

@@ -1,19 +1,22 @@
 <app-search-box
 (onDebounce)="loadMembers(currentPage, $event)"
 [initialValue]="initialValue"
-placeholder="Buscar por nombre o cedula"
+placeholder="Buscar por nombre o c&eacute;dula"
 [showCoordinator]="showSelects"
 [showRegion]="showSelects"
 [showZone]="showSelects"
+[showNew]="showSelects"
 [showDownload]="showDownload"
 [coordinators]="coordinators"
 [regions]="regions"
 [zones]="zones"
 [regionSeleccionada]="regionSeleccionada"
 [zonaSeleccionada]="selectZones"
+[newSeleccionado]="newSeleccionado"
 (onCoordinator)="onCoordinatorChange($event)"
 (onRegion)="onRegionChange($event)"
 (onZone)="onZoneChange($event)"
+(onNew)="onNewChange($event)"
 (onDownload)="onDownloadExcel($event)"
 ></app-search-box>
 
@@ -28,16 +31,17 @@ placeholder="Buscar por nombre o cedula"
           align="middle"
           class="mb-0 border"
           cTable>
-          <thead  cTableColor="light">
+          <thead cTableColor="light">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Cedula</th>
+            <th scope="col">C&eacute;dula</th>
             <th scope="col">Celular</th>
             <th scope="col">Genero</th>
             <th scope="col">Zona</th>
             <th scope="col">Coordinador</th>
-            <th scope="col">Inscripcion</th>
+            <th scope="col">Nuevo</th>
+            <th scope="col">Inscripci&oacute;n</th>
             <th *ngIf="role === 'admin'" scope="col">Acciones</th>
           </tr>
           </thead>
@@ -47,9 +51,10 @@ placeholder="Buscar por nombre o cedula"
               <th>{{ member.first_name | titlecase }} {{ member.last_name | titlecase }}</th>
               <td>{{ member.document | pipeDocument }}</td>
               <td>{{ member.phone | phoneFormat }}</td>
-              <td>{{ member.gender || '' | titlecase }}</td>
-              <td>{{ member.zone.name | titlecase }}</td>
+              <td style="text-align: center;">{{ member.gender || '' | titlecase }}</td>
+              <td style="text-align: center;">{{ member.zone.name | titlecase }}</td>
               <td>{{ member.register?.coordinator_name || 'Editor' | titlecase }}</td>
+              <td style="text-align: center;">{{ (member.new_member === 1) ? 'Si' : 'No' }}</td>
               <td>{{ member.create_date | dateFormat }}</td>
               <td *ngIf="role === 'admin'">
                 <!-- Botón Editar -->

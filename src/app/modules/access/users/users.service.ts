@@ -77,9 +77,7 @@ export class UsersService {
     let param = '';
     // console.log(role, 'hola');
 
-
     if ( role === 'admin' || role === 'digitador') {
-
 
       // Valida si el parametro llego True: llego
       if (userId) {
@@ -88,11 +86,7 @@ export class UsersService {
         param = '';
       }
 
-
     } else {
-
-
-
       // Valida si el parametro llego True: llego
       if (userId) {
         param = `?id=${userId}`;
@@ -101,8 +95,34 @@ export class UsersService {
         param = `?id=${userId}`;
       }
 
+    }
 
+    return this.http.get<Coordinators>( `${url}${param}` );
+  }
 
+  loadRegionalCoodinator( userId?: string ): Observable<Coordinators> {
+    const role = this.authService.getRole();
+    const url = `${apiUrl}/regional-coordinators`;
+    let param = '';
+    // console.log(role, 'hola');
+
+    if ( role === 'admin' || role === 'digitador') {
+
+      // Valida si el parametro llego True: llego
+      if (userId) {
+        param = `?id=${userId}`;
+      } else {
+        param = '';
+      }
+
+    } else {
+      // Valida si el parametro llego True: llego
+      if (userId) {
+        param = `?id=${userId}`;
+      } else {
+        let userId = this.authService.getUser();
+        param = `?id=${userId}`;
+      }
 
     }
 

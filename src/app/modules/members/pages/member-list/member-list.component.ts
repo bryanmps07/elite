@@ -39,7 +39,9 @@ export class MemberListComponent {
   public zones: Zone[] = [];
   public selectZones: number | string = '';
 
-  regionSeleccionada: number | string = '';
+  public regionSeleccionada: number | string = '';
+
+  public newSeleccionado: number | string = '';
 
   constructor(
     private membersService: MembersService,
@@ -58,7 +60,7 @@ export class MemberListComponent {
     this.loadMembers();
   }
 
-  loadMembers(page: number = 1, term: string = '', coordinatorId: string = '', regionId: string = '', zoneId: string = ''): void {
+  loadMembers(page: number = 1, term: string = '', coordinatorId: string = '', regionId: string = '', zoneId: string = '', newId: string = ''): void {
 
     if (term != '') {
       this.initialValue = term;
@@ -71,7 +73,8 @@ export class MemberListComponent {
       search: term,
       coordinator_id: coordinatorId,
       region_id: regionId,
-      zone_id: zoneId
+      zone_id: zoneId,
+      new_id: newId
     })
       .subscribe( response => {  // Asegúrate de que la respuesta sea de tipo 'Users'
         this.members = response.data;  // 'data' es un arreglo de 'User[]'
@@ -120,7 +123,8 @@ export class MemberListComponent {
             this.initialValue,
             this.selectCoordinator,
             this.regionSeleccionada.toString(),
-            this.selectZones.toString()
+            this.selectZones.toString(),
+            this.newSeleccionado.toString()
           );
   }
 
@@ -134,7 +138,7 @@ export class MemberListComponent {
   onRegionChange(value: string): void {
     this.regionSeleccionada = value;
     this.loadZoneSelected(value);
-    this.loadMembers(this.currentPage, this.initialValue, this.selectCoordinator, this.regionSeleccionada.toString(), this.selectZones.toString());
+    this.loadMembers(this.currentPage, this.initialValue, this.selectCoordinator, this.regionSeleccionada.toString(), this.selectZones.toString(), this.newSeleccionado.toString());
   }
 
   loadZones(value: string = ''): void {
@@ -163,7 +167,14 @@ export class MemberListComponent {
     this.selectZones = value;
     // console.log(value);
 
-    this.loadMembers(this.currentPage, this.initialValue, this.selectCoordinator, this.regionSeleccionada.toString(), this.selectZones.toString());
+    this.loadMembers(this.currentPage, this.initialValue, this.selectCoordinator, this.regionSeleccionada.toString(), this.selectZones.toString(), this.newSeleccionado.toString());
+  }
+
+  onNewChange(value: string): void {
+    this.newSeleccionado = value;
+    // console.log(value);
+
+    this.loadMembers(this.currentPage, this.initialValue, this.selectCoordinator, this.regionSeleccionada.toString(), this.selectZones.toString(), this.newSeleccionado.toString());
   }
 
   onDownloadExcel(term: string = '', coordinatorId: string = '', regionId: string = '', zoneId: string = ''): void {
@@ -173,7 +184,8 @@ export class MemberListComponent {
       search: this.initialValue,
       coordinator_id: this.selectCoordinator,
       region_id: this.regionSeleccionada.toString(),
-      zone_id: this.selectZones.toString()
+      zone_id: this.selectZones.toString(),
+      new_id: this.newSeleccionado.toString()
     }).subscribe(
         (response: Blob) => {
         // Crea un enlace temporal para la descarga del archivo

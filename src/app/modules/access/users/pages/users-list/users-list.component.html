@@ -3,7 +3,7 @@
 <app-search-box
 (onDebounce)="loadUsers(currentPage, $event)"
 [initialValue]="initialValue"
-placeholder="Buscar por nombre o cedula"
+placeholder="Buscar por nombre o c&eacute;dula"
 ></app-search-box>
 
 <c-row >
@@ -20,12 +20,12 @@ placeholder="Buscar por nombre o cedula"
           <thead  cTableColor="light">
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Cedula</th>
+            <th scope="col">C&eacute;dula</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
             <th scope="col">Celular</th>
             <th scope="col">Rol</th>
-            <th scope="col">Fecha Creacion</th>
+            <th scope="col">Fecha Creaci&oacute;n</th>
             <th *ngIf="role === 'admin'" scope="col">Acciones</th>
           </tr>
           </thead>

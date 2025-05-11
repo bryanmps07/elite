@@ -32,6 +32,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   public showZone: boolean = false;
 
   @Input()
+  public showNew: boolean = false;
+
+  @Input()
   public showDownload: boolean = false;
 
   @Input()
@@ -45,6 +48,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
   @Input()
   public zonaSeleccionada: number | string = '';
+
+  @Input()
+  public newSeleccionado: number | string = '';
 
   @Input()
   public zones: Zone[] = [];
@@ -63,6 +69,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
   @Output()
   public onZone: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output()
+  public onNew: EventEmitter<string> = new EventEmitter<string>();
 
   @Output()
   public onDownload: EventEmitter<string> = new EventEmitter<string>();
@@ -103,6 +112,11 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   onZoneChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
     this.onZone.emit( value )
+  }
+
+  onNewChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.onNew.emit( value )
   }
 
   onDownloadExcel(event: Event): void {

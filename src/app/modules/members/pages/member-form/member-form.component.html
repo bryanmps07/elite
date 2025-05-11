@@ -19,7 +19,7 @@
         >
 
           <c-col [md]="3">
-            <label cLabel for="document">Cedula <span class="field-required">*</span></label>
+            <label cLabel for="document">C&eacute;dula <span class="field-required">*</span></label>
             <input cFormControl id="document" type="text" formControlName="document" mask="000-0000000-0" [showMaskTyped]="true" placeholder="000-0000000-0" required/>
             <c-form-feedback [valid]="true">Luce bien!</c-form-feedback>
           </c-col>
@@ -165,9 +165,33 @@
 
 
           <c-col [md]="4">
-            <label cLabel for="address">Direccion <span class="field-required">*</span></label>
+            <label cLabel for="address">Direcci&oacute;n <span class="field-required">*</span></label>
             <input cFormControl id="address" formControlName="address" placeholder="Digita una direcci&oacute;n" required type="text" />
             <c-form-feedback [valid]="false">Por favor digita una direcci&oacute;n.</c-form-feedback>
+          </c-col>
+
+          <c-col [md]="4" formGroupName="newmember">
+            <label for="">¿Es un nuevo miembro del partido? <span class="field-required">*</span></label>
+            <c-form-check>
+              <input
+                formControlName="new"
+                cFormCheckInput
+                id="si"
+                type="radio"
+                value="1"
+              />
+              <label cFormCheckLabel for="si">Si</label>
+            </c-form-check>
+            <c-form-check inline>
+              <input
+                formControlName="new"
+                cFormCheckInput
+                id="no"
+                type="radio"
+                value="0"
+              />
+              <label cFormCheckLabel for="no">No</label>
+            </c-form-check>
           </c-col>
 
           <hr>
@@ -228,7 +252,7 @@
           </c-col>
 
           <c-col [md]="3">
-            <label cLabel for="region">Region <span class="field-required">*</span></label>
+            <label cLabel for="region">Regi&oacute;n <span class="field-required">*</span></label>
             <select cSelect id="region" formControlName="region" aria-label="Default select example" (change)="onRegionChange($event)" [class.readonly-select]="isReadonlyForCoordinator" required>
               <option value="">Selecciona una regi&oacute;n...</option>
               <option *ngFor="let region of regions" [value]="region.id">{{ region.name | uppercase }}</option>

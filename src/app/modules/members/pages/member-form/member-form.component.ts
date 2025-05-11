@@ -97,6 +97,9 @@ export class MemberFormComponent  implements OnInit {
       electoral_college: ['', Validators.required],
       campus_college: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/), noOnlySpaceValidator] ],
       address: ['', Validators.required],
+      newmember: this.fb.group({
+        new: ['', Validators.required],
+      }),
       coordinator: [this.role === 'admin' || this.role === 'digitador' ? '' : this.userId, Validators.required],
       province: ['', Validators.required],
       municipality: ['', Validators.required],
@@ -139,11 +142,16 @@ export class MemberFormComponent  implements OnInit {
         (response: Member[]) => {
           if (response && response.length > 0) {
             const member = response[0];
+            // console.log(member);
 
             this.getZoneByRegion(member.region?.id.toString()!);
 
             this.memberForm.get('genders')?.patchValue({
               gender: member.gender // Asegúrate de que el id del rol sea el valor correcto
+            });
+
+            this.memberForm.get('newmember')?.patchValue({
+              new: member.new_member?.toString() // Asegúrate de que el id del rol sea el valor correcto
             });
 
             this.memberForm.patchValue({

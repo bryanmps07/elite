@@ -21,7 +21,7 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-list' }
   },
   {
-    name: 'Administracion',
+    name: 'Administración',
     title: true,
     roles: ['admin'],
   },

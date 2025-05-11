@@ -42,6 +42,9 @@ export class UsersFormComponent implements OnInit{
 
   submitted: boolean = false;
 
+  public coordinators: User[] = [];
+  public selectCoordinator: User[] = [];
+
   public userId: string | null = '';
 
   public provinces: Province[] = [];
@@ -65,11 +68,10 @@ export class UsersFormComponent implements OnInit{
     // console.log(this.userId);
     this.loadUser();
 
-
+    this.loadCoordinator();
     this.loadProvinces();
     this.loadMunicipalities();
     this.loadRegions();
-
 
     this.userForm = this.fb.group({
       rol: this.fb.group({
@@ -80,6 +82,7 @@ export class UsersFormComponent implements OnInit{
       first_name: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/), noOnlySpaceValidator] ],
       last_name: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/), noOnlySpaceValidator] ],
       phone: ['', Validators.required],
+      coordinator: [''],
       province: ['1', Validators.required],
       municipality: ['1', Validators.required],
       // district: ['', Validators.required],
@@ -100,6 +103,10 @@ export class UsersFormComponent implements OnInit{
       role: this.fb.control({ value: 1 }),
     });
 
+  }
+
+  get showRegionalCordinatorContainer(): boolean {
+    return this.userForm.get('rol.role')?.value === '5';
   }
 
   get showAddressContainer(): boolean {
@@ -128,6 +135,17 @@ export class UsersFormComponent implements OnInit{
       this.userForm.get('zone')?.enable();
       this.userForm.get('zone')?.updateValueAndValidity();
     }
+
+    if (value === '5') {
+      this.userForm.get('coordinator')?.setValidators(Validators.required);
+      this.userForm.get('coordinator')?.enable();
+      this.userForm.get('coordinator')?.updateValueAndValidity();
+    } else {
+      this.userForm.patchValue({coordinator: ''});
+      this.userForm.get('coordinator')?.clearValidators();
+      this.userForm.get('coordinator')?.disable();
+      this.userForm.get('coordinator')?.updateValueAndValidity();
+    }
   }
 
   loadUser(): void {
@@ -154,6 +172,7 @@ export class UsersFormComponent implements OnInit{
               first_name: user.first_name,
               last_name:  user.last_name,
               phone:      user.phone,
+              coordinator: user.regionalCoordinator?.id,
               province:   user.province?.id,
               municipality: user.municipality?.id,
               region:     user.region?.id,
@@ -283,6 +302,54 @@ export class UsersFormComponent implements OnInit{
     });
   }
 
+  loadCoordinator(): void {
+    this.usersService.loadRegionalCoodinator().subscribe(response => {
+      if (response && response.data) {  // Verifica que la respuesta contenga la propiedad 'data'
+        this.coordinators = response.data;  // 'data' es un arreglo de 'User[]'
+      } else {
+        console.error('No coordinators found in the response.');
+      }
+    }, error => {
+      console.error('Error loading coordinators', error);  // Maneja el error adecuadamente
+    });
+  }
+
+  onCoordinatorChange(event: Event): void {
+    const selectedValue = (event?.target as HTMLSelectElement).value;
+
+    if (!selectedValue) return
+    // console.log(selectedValue);
+
+    this.usersService.loadRegionalCoodinator(
+      selectedValue
+     ).subscribe(response => {
+      if (response && response.data) {  // Verifica que la respuesta contenga la propiedad 'data'
+        this.selectCoordinator = response.data;  // 'data' es un arreglo de 'User[]'
+        // console.log(this.selectCoordinator[0]);  // Imprime para verificar
+
+        this.userForm.patchValue({ province: this.selectCoordinator[0].province?.id ?? '1' });
+
+        !!this.selectCoordinator[0].region?.id ?
+              this.loadRegionChange(this.selectCoordinator[0].region?.id.toString()) : this.zones = [];
+
+          setTimeout(() => {
+            this.userForm.patchValue({
+              municipality: this.selectCoordinator[0].municipality?.id ?? '1',
+              region: this.selectCoordinator[0].region?.id ?? '',
+              zone: this.selectCoordinator[0].zone?.id ?? ''
+            });
+          }, 300);
+
+        // console.log(this.memberForm.get('municipality')?.value);
+
+      } else {
+        console.error('No coordinators found in the response.');
+      }
+    }, error => {
+      console.error('Error loading coordinators', error);  // Maneja el error adecuadamente
+    });
+  }
+
   loadProvinces(): void {
     this.provinceService.searchProvinces()
     .subscribe( response => {
@@ -353,6 +420,23 @@ export class UsersFormComponent implements OnInit{
     }, error => {
       console.error('Error al obtener las zonas:', error);
     });
+  }
+
+  loadRegionChange(regionId: string | number): void {
+
+    this.zoneService.getZonesByRegionId(regionId)
+      .subscribe( response => {
+       // Asigna la propiedad 'data' que contiene el arreglo de region
+      if (response && response.data && Array.isArray(response.data)) {
+        this.zones = response.data;
+        // console.log('Municipios:', this.municipalities);
+      } else {
+        console.error('La respuesta no tiene un arreglo válido de zonas:', response);
+      }
+    }, error => {
+      console.error('Error al obtener las zonas:', error);
+    });
+
   }
 
   loadZones(): void {
